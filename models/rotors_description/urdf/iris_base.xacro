@@ -23,6 +23,8 @@
   <xacro:arg name='visual_material' default='DarkGrey' />
   <xacro:arg name='enable_mavlink_interface' default='true' />
   <xacro:arg name='enable_wind' default='false' />
+  <xacro:arg name='camera' default='false' />
+  <xacro:arg name='ball' default='false' />
   <!-- The following causes segfault with multiple vehicles if defaults to true!!! -->
   <xacro:arg name='enable_ground_truth' default='false' />
   <xacro:arg name='enable_logging' default='false' />
@@ -99,6 +101,38 @@
     <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:imu_plugin_macro>
+  
+  <xacro:if value="$(arg camera)">
+    <!-- Mount a Camera. -->
+    <xacro:camera_macro
+    namespace="${namespace}"
+    parent_link="base_link"
+    camera_suffix=""
+    frame_rate="30.0"
+    horizontal_fov="1.3962634"
+    image_width="640"
+    image_height="480"
+    image_format="R8G8B8"
+    min_distance="0.02"
+    max_distance="300"
+    noise_mean="0.0"
+    noise_stddev="0.007"
+    enable_visual="1"
+    >
+    <box size="0.02 0.02 0.02"/>
+    <origin xyz="0.080 0 0.045" rpy="0 0 0"/>
+    </xacro:camera_macro>
+  </xacro:if>
+  
+  <xacro:if value="$(arg ball)">
+    <!-- Mount a Ball. -->
+    <xacro:ball_macro
+    namespace="${namespace}"
+    parent_link="base_link"
+    >
+    <origin xyz="0 0 0.102" rpy="0 0 0"/>
+    </xacro:ball_macro>
+  </xacro:if>
 
   <xacro:if value="$(arg enable_ground_truth)">
     <!-- Mount an IMU providing ground truth. -->

@@ -1,0 +1,26 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='iris_ball'>
+
+    <include>
+      <uri>model://iris</uri>
+    </include>
+
+    <include>
+      <uri>model://ball</uri>
+      <pose>0 0 0.102 0 0 0</pose>
+    </include>
+    <joint name="ball_joint" type="fixed">
+      <child>ball::link</child>
+      <parent>iris::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+
+  </model>
+</sdf>

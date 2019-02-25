@@ -36,6 +36,28 @@
     </gazebo>
   </xacro:macro>
 
+  <!-- Macro to add a ball. -->
+  <xacro:macro name="ball_macro"
+    params="namespace parent_link *origin">
+    <link name ="${namespace}/ball_link">
+      <pose>0 0 0 0 0 0</pose>
+      <visual>
+        <geometry>
+          <sphere radius="0.05"/>
+        </geometry>
+        <material name="green"/>
+      </visual>
+    </link>
+    <joint name="${namespace}/ball_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent_link}" />
+      <child link="${namespace}/ball_link" />
+    </joint>
+    <gazebo reference="${namespace}/ball_link">
+      <material>Gazebo/Green</material>
+    </gazebo>
+  </xacro:macro>
+
   <!-- Macro to add a camera. -->
   <xacro:macro name="camera_macro"
     params="namespace parent_link camera_suffix frame_rate
@@ -54,7 +76,7 @@
           <geometry>
             <xacro:insert_block name="cylinder" />
           </geometry>
-          <material name="red" />
+          <material name="grey" />
         </visual>
       </xacro:if>
       <inertial>
@@ -69,6 +91,7 @@
       <child link="${namespace}/camera_${camera_suffix}_link" />
     </joint>
     <gazebo reference="${namespace}/camera_${camera_suffix}_link">
+      <material>Gazebo/Grey</material>
       <sensor type="camera" name="${namespace}_camera_${camera_suffix}">
         <update_rate>${frame_rate}</update_rate>
         <camera name="head">
@@ -95,7 +118,7 @@
           <robotNamespace>${namespace}</robotNamespace>
           <alwaysOn>true</alwaysOn>
           <updateRate>${frame_rate}</updateRate>
-          <cameraName>camera_${camera_suffix}</cameraName>
+          <cameraName>camera${camera_suffix}</cameraName>
           <imageTopicName>image_raw</imageTopicName>
           <cameraInfoTopicName>camera_info</cameraInfoTopicName>
           <frameName>camera_${camera_suffix}_link</frameName>
